@@ -1,0 +1,20 @@
+#!/bin/bash
+
+getDate(){
+    date
+
+    return 
+}
+
+getDate
+
+name="guy"
+
+demLocal(){
+    local name="sade"
+    return
+}
+
+demLocal
+
+echo "$name"
