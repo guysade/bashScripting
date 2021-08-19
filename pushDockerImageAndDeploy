@@ -1,0 +1,5 @@
+#!/bin/bash
+docker build --tag python-docker:latest /app
+docker image tag python-docker:latest guysade4/python-docker:latest
+docker push guysade4/python-docker:latest
+kubectl apply -f /app/deployment.yml

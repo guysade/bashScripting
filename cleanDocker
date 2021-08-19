@@ -1,0 +1,3 @@
+#!/bin/bash
+docker rm container -f $(docker container -a -q)
+docker rmi -f $(docker images -a -q)
