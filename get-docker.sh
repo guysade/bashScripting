@@ -19,7 +19,7 @@ set -e
 #
 # Git commit from https://github.com/docker/docker-install when
 # the script was uploaded (Should only be modified by upload job):
-SCRIPT_COMMIT_SHA="0e685c6ac0bddd7b2ba7bcaaeb519746ad249a29"
+SCRIPT_COMMIT_SHA="93d2499759296ac1f9c510605fef85052a2c32be"
 
 # strip "v" prefix if present
 VERSION="${VERSION#v}"
@@ -400,7 +400,7 @@ do_install() {
 				fi
 				$sh_c 'apt-get update -qq >/dev/null'
 				$sh_c "DEBIAN_FRONTEND=noninteractive apt-get install -y -qq $pre_reqs >/dev/null"
-				$sh_c "curl -fsSL \"$DOWNLOAD_URL/linux/$lsb_dist/gpg\" | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg"
+				$sh_c "curl -fsSL \"$DOWNLOAD_URL/linux/$lsb_dist/gpg\" | gpg --dearmor --yes -o /usr/share/keyrings/docker-archive-keyring.gpg"
 				$sh_c "echo \"$apt_repo\" > /etc/apt/sources.list.d/docker.list"
 				$sh_c 'apt-get update -qq >/dev/null'
 			)
@@ -536,8 +536,10 @@ do_install() {
 				echo "Packages for SLES are currently only available for s390x"
 				exit 1
 			fi
+
+			sles_version="${dist_version##*.}"
 			sles_repo="$DOWNLOAD_URL/linux/$lsb_dist/$REPO_FILE"
-			opensuse_repo="https://download.opensuse.org/repositories/security:SELinux/SLE_15_SP2/security:SELinux.repo"
+			opensuse_repo="https://download.opensuse.org/repositories/security:SELinux/SLE_15_SP$sles_version/security:SELinux.repo"
 			if ! curl -Ifs "$sles_repo" > /dev/null; then
 				echo "Error: Unable to curl repository file $sles_repo, is it valid?"
 				exit 1
